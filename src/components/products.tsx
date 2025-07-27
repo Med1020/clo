@@ -1,25 +1,27 @@
-import {
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { fetchData } from '../services/productsapi'
 import ProductCard from './productCard'
 import { FilterContextValue } from '../context/filterContext'
 import { pricingOptionMap } from '../utils/pricingOptionMap'
 import type { ProductApiResponse } from '../types/productType'
+import { ProductCardSkeleton } from './skeletonLoader/productCardSkeleton'
 
 const Products = () => {
   const [fetchedProducts, setFetchedProducts] = useState<
     ProductApiResponse[] | []
   >([])
   const [loading, setLoading] = useState(false)
-  const { state } = useContext(FilterContextValue)
+  const filterContext = useContext(FilterContextValue)
+
+  if (!filterContext) {
+    throw new Error('FilterContext must be used within a FilterProvider')
+  }
+
+  const { state } = filterContext
 
   useEffect(() => {
-    const getData = async () => {
-      setLoading(true)
+    setLoading(true)
+    const intervalId = setInterval(async () => {
       try {
         const result = await fetchData()
         if (result) {
@@ -27,11 +29,12 @@ const Products = () => {
         }
       } catch (error) {
         console.log(error)
+      } finally {
+        setLoading(false)
       }
-    }
-    getData()
+    }, 3000)
+    return () => clearInterval(intervalId)
   }, [])
-
 
   const filteredProducts = useMemo(() => {
     return fetchedProducts
@@ -69,11 +72,13 @@ const Products = () => {
       })
   }, [state, fetchedProducts])
 
-  return (
+  return loading ? (
+    <ProductCardSkeleton />
+  ) : (
     <div>
       {filteredProducts.length > 0 && (
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-8'>
-          <ProductCard products={filteredProducts}  />
+          <ProductCard products={filteredProducts} />
         </div>
       )}
     </div>

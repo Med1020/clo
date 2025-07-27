@@ -1,12 +1,28 @@
-@import "tailwindcss";
 
-@theme {
-  --breakpoint-xs: 30rem;
-  --breakpoint-2xl: 100rem;
-  --breakpoint-3xl: 120rem;
+.skeleton {
+  animation: skeleton-loading 1s linear infinite alternate;
 }
 
-    Default: 4 columns
-    ■ Below 1200px: 3 columns
-    ■ Below 768px: 2 columns
-    ■ Below 480px: 1 column
+@keyframes skeleton-loading {
+  0% {
+    background-color: rgba(120,120,120,0.6);
+  }
+  100% {
+    background-color: rgba(120,120,120,0.9);
+  }
+}
+
+/* .skeleton-text {
+  width: 100%;
+  height: 0.7rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.25rem;
+} */
+
+/* .skeleton-text__body {
+  width: 75%;
+}
+
+.skeleton-footer {
+  width: 30%;
+} */

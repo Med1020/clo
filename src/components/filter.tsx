@@ -1,14 +1,23 @@
 import { useContext } from 'react'
 import { FilterContextValue } from '../context/filterContext'
+import type { FilterState } from '../context/filterReducer'
+
+type BooleanFilterKey = keyof Omit<FilterState, 'search' | 'sortBy'>
 
 const Filter = () => {
-  const { state, dispatch } = useContext(FilterContextValue)
+  const filterContext = useContext(FilterContextValue)
+
+  if (!filterContext) {
+    throw new Error('FilterContext must be used within a FilterProvider')
+  }
+
+  const { state, dispatch } = filterContext
 
   const handleReset = () => {
     dispatch({ type: 'reset_filter' })
   }
 
-  const handleSetFilter = (val: string) => {
+  const handleSetFilter = (val: BooleanFilterKey) => {
     dispatch({ type: 'filter_by', payload: { [val]: !state[val] } })
   }
   return (

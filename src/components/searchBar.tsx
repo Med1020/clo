@@ -1,15 +1,20 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { FilterContextValue } from '../context/filterContext'
 
 const SearchBar = () => {
-  const [searchInput, setSearchInput] = useState('')
-  const { state,dispatch } = useContext(FilterContextValue)
+  // const [searchInput, setSearchInput] = useState('')
+  const filterContext = useContext(FilterContextValue)
 
-  const handleSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(event.target.value)
-    dispatch({ type: 'set_search', payload: event.target.value })
+  if (!filterContext) {
+    throw new Error('FilterContext must be used within a FilterProvider')
   }
 
+  const { state, dispatch } = filterContext
+
+  const handleSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // setSearchInput(event.target.value)
+    dispatch({ type: 'set_search', payload: event.target.value })
+  }
 
   const handleClearSearch = () => {
     dispatch({ type: 'set_search', payload: '' })
@@ -22,7 +27,6 @@ const SearchBar = () => {
         className='w-full  focus:outline-none'
         onChange={handleSearchInput}
         value={state.search}
-        // onKeyDown={handleSearch}
       />
 
       {state.search.trim().length === 0 ? (
@@ -34,9 +38,9 @@ const SearchBar = () => {
             viewBox='0 0 24 24'
             fill='none'
             stroke='currentColor'
-            stroke-width='2'
-            stroke-linecap='round'
-            stroke-linejoin='round'
+            strokeWidth='2'
+            strokeLinecap='round'
+            strokeLinejoin='round'
             className='lucide lucide-search-icon lucide-search'
           >
             <path d='m21 21-4.34-4.34' />
