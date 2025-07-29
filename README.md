@@ -1,69 +1,88 @@
-# React + TypeScript + Vite
+# Clo-set
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A product listing page built with **React 19**, **TypeScript**, **Vite**, and **TailwindCSS**.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Product Listing**: Displays products fetched from an API, with support for loading skeletons.
+- **Filtering**: Filter products by pricing options (Paid, Free, View Only).
+- **Search**: Search products by title or creator.
+- **Sorting**: Sort products by name or price (ascending/descending).
+- **Responsive UI**: Built with TailwindCSS for a modern, responsive design.
+- **Context-based State Management**: Uses React Context and Reducer for global filter state.
+- **URL State Sync**: Filter and sort state is reflected in the URL for shareable/filterable links.
+- **TypeScript Strictness**: Strong typing for all data and state.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Getting Started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
+
+- **Node.js** (v18+ recommended)
+- **npm** (v9+ recommended)
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repo-url>
+   cd <repo-directory>
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables:**
+   - Create a `.env` file in the root directory.
+   - Add your API base URL:
+     ```
+     VITE_API_BASE_URL=< enter the url provided along with the assignment>
+     ```
+
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+   The app will be available at `http://localhost:5173` (or as indicated in the terminal).
+
+### Build for Production
+
+```bash
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Preview Production Build
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run preview
 ```
+
+### Linting
+
+```bash
+npm run lint
+```
+
+---
+
+## Core Concepts & Architecture
+
+### Data Flow
+
+- **API Integration**: Product data is fetched from `${VITE_API_BASE_URL}/api/data` using the `fetchData` service.
+- **State Management**: Filtering, searching, and sorting state is managed globally using React Context and a reducer (`FilterProvider`).
+- **URL Sync**: Filter and sort state is reflected in the URL query parameters for shareable and bookmarkable state.
+
+### Main Components
+
+- **ProductsPage**: The main page, composed of `Navbar`, `SearchBar`, `Filter`, `Sort`, and `Products`.
+- **Products**: Fetches and displays products, applies filtering, searching, and sorting.
+- **ProductCard**: Renders individual product details.
+- **Filter/SearchBar/Sort**: UI controls for filtering, searching, and sorting products.
+- **SkeletonLoader**: Displays loading skeletons while data is being fetched.
